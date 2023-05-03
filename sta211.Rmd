@@ -1,0 +1,6 @@
+---
+title: "sta211"
+author: "Anthony Kalaydjian - Mathieu Occhipinti"
+date: "2023-05-03"
+output: pdf_document
+---
