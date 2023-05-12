@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.11)  11 MAY 2023 17:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.12)  12 MAY 2023 13:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **sta211.tex
 (./sta211.tex
 LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2023-05-05> (c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
+L3 programming layer <2023-05-11> (c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
 (c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
 File: size10.clo 2022/07/02 v1.4n Standard LaTeX file (size option)
@@ -432,44 +432,49 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 122.
 
-Overfull \hbox (32.8397pt too wide) detected at line 129
+Overfull \hbox (32.8397pt too wide) detected at line 130
 []
  []
 
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 162.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 167.
 (c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 163.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 168.
 [1
 
 {c:/Users/pc/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
-<sta211_files/figure-latex/frequence-1.pdf, id=66, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/frequence-1.pdf, id=68, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/frequence-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/frequence-1.pdf>
-Package pdftex.def Info: sta211_files/figure-latex/frequence-1.pdf  used on input line 219.
+Package pdftex.def Info: sta211_files/figure-latex/frequence-1.pdf  used on input line 224.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[2] [3 <./sta211_files/figure-latex/frequence-1.pdf>] [4] (./sta211.aux)
+[2] [3 <./sta211_files/figure-latex/frequence-1.pdf>]
+Overfull \hbox (74.54836pt too wide) detected at line 297
+[]
+ []
+
+[4] [5] (./sta211.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `sta211.out' has not changed.
-(rerunfilecheck)             Checksum: FF0E52242944D6327EDF3F3BAB392C27;1909.
+(rerunfilecheck)             Checksum: D5CB3561E76E52FC348E9380AF8A2144;2194.
  ) 
 Here is how much of TeX's memory you used:
- 11378 strings out of 478007
- 177899 string characters out of 5838216
- 1872242 words of memory out of 5000000
- 31344 multiletter control sequences out of 15000+600000
+ 11450 strings out of 478006
+ 179675 string characters out of 5837997
+ 1873993 words of memory out of 5000000
+ 31414 multiletter control sequences out of 15000+600000
  570481 words of font info for 77 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,10n,76p,557b,469s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,76p,557b,582s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on sta211.pdf (4 pages, 336339 bytes).
+Output written on sta211.pdf (5 pages, 345536 bytes).
 PDF statistics:
- 197 PDF objects out of 1000 (max. 8388607)
- 141 compressed objects within 2 object streams
- 21 named destinations out of 1000 (max. 500000)
- 62 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 206 PDF objects out of 1000 (max. 8388607)
+ 149 compressed objects within 2 object streams
+ 24 named destinations out of 1000 (max. 500000)
+ 70 words of extra memory for PDF output out of 10000 (max. 10000000)
 

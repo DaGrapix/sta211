@@ -1,11 +1,11 @@
 ---
-title: "STA211"
+title: "STA211 - sujet 1"
 author: "Anthony Kalaydjian - Mathieu Occhipinti"
 date: "2023-05-03"
 header-includes:
    - \usepackage{cancel}
 output:
-  pdf_document:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -26,6 +26,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ### Vraissemblance du modèle
 
 La vraissemblance du modèle $\mathcal{M}$ s'écrit comme suit :
+
 \begin{align*}
 \left[C_1=c_1, C_{20}=c_{20}, C_{21}=c_{21} | \pi, N \right] &= \left[C_1=c_1| \pi, N \right] \left[C_{20}=c_{20}, | \pi, N, C_1=c_1\right] \left[C_{21}=c_{21} | \pi, N, C_1=c_1, C_{20}=c_{20},  \right]\\
 &= \left[C_1=c_1| \pi, N \right] \left[C_{20}=c_{20}, | \pi, N, C_1=c_1\right] \left[C_{21}=c_{21} | \pi, N, C_1=c_1 \right]\\
@@ -38,11 +39,14 @@ C_{c_{21}}^{c_1} \pi^{c_{21}} (1 - \pi)^{C_1 - c_{21}}
 On en déduit donc la log-vraissemblance en passant au log :
 
 \begin{align*}
-\text{l}(N, \pi) &= \ln \left( C_{c_{1}}^{N} C_{c_{20}}^{N-c_1}  C_{c_{21}}^{c_1} \right)
+\text{l}(N, \pi)    &= \ln \left( C_{c_{1}}^{N} C_{c_{20}}^{N-c_1}  C_{c_{21}}^{c_1} \right)
 + (c_1 + c_{20} + c_{21})\ln \left( \pi  \right)
-+ (2N - 2c_1 - c_{20} + c_1 - c_{21}) \ln \left( 1 - \pi  \right)
++ (2N - 2c_1 - c_{20} + c_1 - c_{21}) \ln \left( 1 - \pi  \right)\\
+                    &= \ln \left( C_{c_{1}}^{N} C_{c_{20}}^{N-c_1}  C_{c_{21}}^{c_1} \right) + (c_1 + c_{2})\ln \left( \pi  \right)
+                    + (2N - c_1 - c_{2}) \ln \left( 1 - \pi  \right)
 \end{align*}
 
+car $c_{20} + c_{21} = c_2$
 
 
 ### Simulation du tirage de $C_1$
@@ -136,6 +140,73 @@ Supposons tout d'abord que $N=950$ (connu) et estimons l'efficacité $\pi$.
 
 ### Estimateur de maximum de vraissemblance $\hat{\pi}_{MLE}$ de $\pi$
 
+\begin{align*}
+\frac{d l}{d \pi}(N, \pi) &= (c_1 + c_{2})\frac{1}{\pi} + (2N - c_1 - c_{2}) \frac{1}{1 - \pi} (-1)\\
+                          &= (c_1 + c_{2})\frac{1}{\pi} - (2N - c_1 - c_{2}) \frac{1}{1 - \pi}
+\end{align*}
+
+\begin{align*}
+\frac{d l}{d \pi}(N, \pi) > 0 
+& \iff (c_1 + c_{2})\frac{1}{\pi} - (2N - c_1 - c_{2}) \frac{1}{1 - \pi} > 0\\
+& \iff (c_1 + c_{2})\frac{1}{\pi} > (2N - c_1 - c_{2}) \frac{1}{1 - \pi}\\
+& \iff \frac{c_1 + c_{2}}{2N - c_1 - c_{2}}(1 - \pi) > \pi\\
+& \iff \pi \left( 1 +  \frac{c_1 + c_{2}}{2N - c_1 - c_{2}} \right) < \frac{c_1 + c_{2}}{2N - c_1 - c_{2}}\\
+& \iff \pi \frac{2N}{2N - c_1 - c_{2}} < \frac{c_1 + c_{2}}{2N - c_1 - c_{2}}\\
+& \iff \pi < \frac{c_1 + c_{2}}{2N}
+\end{align*}
+
+On en déduit que :
+
+$$
+\boxed{\hat{\pi}_{MLE} = \frac{c_1 + c_{2}}{2N}}
+$$
+
+### Loi beta à priori
+
+On choisit une loi à priori $\beta(a, b)$ pour $\pi$, que l'on note $f(\pi) = \pi^{a-1} (1-\pi)^{b-1}$
+
+\begin{align*}
+\ln \left( \left[ \pi | N, C_1, C_{20}, C_{21} \right] f(\pi) = \pi^{a-1} (1-\pi)^{b-1} \right)
+&\propto (c_1 + c_{2})\ln \left( \pi  \right) + (2N - c_1 - c_{2}) \ln \left( 1 - \pi  \right) + (a-1) \ln(\pi) + (b-1) \ln (1-\pi)\\
+&\propto (c_1 + c_{2} + a - 1)\ln \left( \pi  \right) + (2N - c_1 - c_{2} + b - 1) \ln \left( 1 - \pi  \right)
+\end{align*}
+
+On reconnait le logarithme d'une loi proportionnelle à une loi $\beta(c_1 + c_2 + a, 2N - c_1 - c_{2} + b)$.
+
+Donc:
+$$
+\boxed{\pi | _{N} \sim \beta \; (c_1 + c_2 + a, 2N - c_1 - c_2 + b)}
+$$
+
+On en déduit son espérance et sa variance :
 
 
-###
+\begin{align*}
+\mathbb{E}\left( \pi | _{N} \right) &= \frac{c_1 + c_2 + a}{c_1 + c_2 + a + 2N - c_1 - c_2 + b}\\
+\mathbb{E}\left( \pi | _{N} \right) &= \frac{c_1 + c_2 + a}{2N + a + b}
+\end{align*}
+
+
+
+### Représentation graphique
+
+On choisit $a=1$, $b = 3$.
+
+```{r}
+df <- capture.sim(N, pi)
+
+a <- 1
+b <- 3
+a.post <- C1 + C2 + a
+b.post <- 2*N - C1 - C2 + b
+
+
+```
+
+
+
+
+
+
+
+
