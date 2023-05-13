@@ -215,9 +215,10 @@ p_val<- seq(0, 1, length.out=100)
 
 
 ```{r plots}
-plot(p_val, dbeta(p_val, a, b),type="l",col="red",ylab="Density",xlab="pi",main=paste("a=",a,"b=",b),ylim=c(0,40))
-points(p_val, dbeta(p_val,a.post,b.post),type="l")
+plot(p_val, dbeta(p_val, a, b),type="l",col="red",ylab="Densité",xlab="pi",main=paste("a=",a,"b=",b),ylim=c(0,55))
+curve(dbeta(x,a.post,b.post),add=TRUE, col="blue")
 abline(v=pi.MLE)
+legend("topright", legend=c("a priori", "a posteriori", "max.vraiss"), bty='n', pch=rep('_',3), col=c("red","blue","black"))
 ```
 
 On observe que le seul mode de la loi à postériori coincide avec la valeur de l'estimateur de maximum de vraissemblance de $\pi$.
@@ -279,13 +280,15 @@ N.MC(N.true, pi.true, n.iter)
 
 
 ```{r}
+set.seed(57)
 N.true.seq <- seq(100, 1000, 10)
-N.evolution <- sapply(N.true.seq, FUN=function(n) N.MC(n, pi.true,n.iter))
+N.evolution <- sapply(N.true.seq, FUN=function(n) N.MC(n, pi.true, n.iter))
 ```
 
 
+
 ```{r}
-plot(N.true.seq, N.evolution-N.true)
+plot(N.true.seq, N.evolution-N.true, xlab="N.true")
 ```
 
 
@@ -299,3 +302,9 @@ plot(N.true.seq, N.evolution-N.true)
 
 ### Approche bayésienne
 
+
+####
+
+\begin{align*}
+\left[ N, \pi, \theta, C_1, C_{20}, C_{21} \right] &= \left[N \right] \left[\pi | N \right] \left[C_1| \pi, N \right] \left[C_{20}, | \pi, N, C_1\right] \left[C_{21} | \pi, N, C_1, C_{20},  \right]\\
+\end{align*}
