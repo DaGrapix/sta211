@@ -14,6 +14,7 @@ output:
 rm(list=ls())
 library(tibble)
 library(ggplot2)
+set.seed(32)
 ```
 
 ```{r setup, include=FALSE} 
@@ -193,14 +194,98 @@ On en déduit son espérance et sa variance :
 On choisit $a=1$, $b = 3$.
 
 ```{r}
+set.seed(32)
+N = 950
+pi = 0.3
 df <- capture.sim(N, pi)
+C1 <- df$C1
+C2 <- df$C20 + df$C21
+```
 
+
+```{r generation de données}
 a <- 1
 b <- 3
 a.post <- C1 + C2 + a
 b.post <- 2*N - C1 - C2 + b
+pi.MLE <- (C1 + C2)/(2*N)
+
+p_val<- seq(0, 1, length.out=100)
+```
 
 
+```{r plots}
+plot(p_val, dbeta(p_val, a, b),type="l",col="red",ylab="Density",xlab="pi",main=paste("a=",a,"b=",b),ylim=c(0,40))
+points(p_val, dbeta(p_val,a.post,b.post),type="l")
+abline(v=pi.MLE)
+```
+
+On observe que le seul mode de la loi à postériori coincide avec la valeur de l'estimateur de maximum de vraissemblance de $\pi$.
+C'est bon signe.
+
+
+## Supposons N et $\pi$ connus
+
+### Approche fréquentiste
+
+
+
+#### 
+
+Pour évaluer le nombre d’individus N dans une population d’intérêt à partir de deux expériences de pêche de type capture-marquage-recapture, un estimateur fréquentiste naïf est l’estimateur de "Petersen" défini par :
+
+$$
+\hat{N} = \frac{C_1 C_2}{C_{21}}
+$$
+Les données disponibles proviennent d’une expérience réelle "miniature" de
+capture-marquage-recapture réalisée par des étudiants à l’aide d’un saladier ("le
+lac") rempli de riz ("l'eau du lac") et de haricots blancs ("les poissons"). Les
+données observées par les étudiants sont les suivantes : $C_1=125$, $C_{20}=134$ et
+$C_{21}=21$.
+
+```{r}
+C1 <- 125
+C20 <- 134
+C21 <- 21
+C2 <- C20 + C21
+
+N.hat <- C1*C2/C21
+round(N.hat, 0)
+```
+L'estimateur naïf de Petersen nous indique qu'il y a 923 "poissons" dans le lac.
+
+
+####
+
+Supposons ici que les "vraies" valeurs des paramètres soient $N_{true} = 923$
+et $\pi_{true} = 0.15$.
+
+```{r}
+n.iter <- 100
+N.true <- 923
+pi.true <- 0.15
+
+N.MC <- function(N, pi, n.iter){
+  df.repeated <- replicate(n.iter, capture.sim(N, pi)) %>% drop() %>% t() %>% as.data.frame()
+  N.hat.repeated <- apply(df.repeated, MARGIN=1, FUN = function(x) x$C1*(x$C20+x$C21)/x$C21)
+  df.repeated$N.hat <- N.hat.repeated
+  N.monte.carlo <- mean(df.repeated$N.hat)
+  return(N.monte.carlo)
+}
+
+N.MC(N.true, pi.true, n.iter)
+```
+
+
+
+```{r}
+N.true.seq <- seq(100, 1000, 10)
+N.evolution <- sapply(N.true.seq, FUN=function(n) N.MC(n, pi.true,n.iter))
+```
+
+
+```{r}
+plot(N.true.seq, N.evolution-N.true)
 ```
 
 
@@ -209,4 +294,8 @@ b.post <- 2*N - C1 - C2 + b
 
 
 
+
+
+
+### Approche bayésienne
 
