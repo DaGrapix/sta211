@@ -304,7 +304,10 @@ plot(N.true.seq, N.evolution-N.true, xlab="N.true")
 
 
 ####
-
+$$
 \begin{align*}
-\left[ N, \pi, \theta, C_1, C_{20}, C_{21} \right] &= \left[N \right] \left[\pi | N \right] \left[C_1| \pi, N \right] \left[C_{20}, | \pi, N, C_1\right] \left[C_{21} | \pi, N, C_1, C_{20},  \right]\\
+\left[N=n, \pi=p, C_1=c_1, C_{20}=c_{20}, C_{21}=C_{21} \right] =\\ 
+\left[N=n \right] \left[\pi=p | N=n \right] \left[C_1=c_1| \pi=p, N=n \right] \left[C_{20}=c_{20}, | \pi=p, N=n, C_1=c_1 \right] \left[C_{21}=c_{21} | \pi=p, N=n, C_1=c_1, C_{20}=c_{20}  \right]\\
 \end{align*}
+$$
+
