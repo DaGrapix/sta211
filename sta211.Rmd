@@ -395,8 +395,7 @@ MCMC <- function(theta.0, y, pi.0, n.iter, a, b, k){
     pi.curr <- rbeta(n=1, shape1=c1+c2+a, shape2=2*N.curr-c1-c2+b)
     
     #loi uniforme discrète
-    innov <- sample(-k:k, size=1)
-    N.cand <- N.curr + innov
+    N.cand <- N.curr + sample(-k:k, size=1)
     lik <- N.law(N.cand, pi.curr, c1, c20)
     r <- lik/oldlik
     u <- runif(1)
@@ -423,7 +422,7 @@ plot.k.accept.rate <- function(k.seq, theta.0, n.iter, y, a, b){
 
 
 ```{r}
-set.seed(125)
+set.seed(5)
 k.seq <- seq(1, 301, 10)
 n.iter <- 10000
 a <- 1
@@ -436,6 +435,8 @@ theta.0 <- c(pi.0=rbeta(n=1, shape1=a, shape2=b), N.0=1000)
 
 plot.k.accept.rate(k.seq, theta.0, n.iter, y, a, b)
 
+
+##################changer
 #k.opt <- ?
 ```
 
