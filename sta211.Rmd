@@ -1,5 +1,7 @@
 ---
-title: "STA211 - sujet 1"
+title:  |
+        |   STA211 - sujet 1
+        |   Estimation d'une taille de population à partir de données de capture-marquage-recapture
 author: "Anthony Kalaydjian - Mathieu Occhipinti"
 date: "2023-05-03"
 header-includes:
@@ -14,6 +16,7 @@ output:
 rm(list=ls())
 library(tibble)
 library(ggplot2)
+library(tidyverse)
 set.seed(32)
 ```
 
@@ -21,7 +24,7 @@ set.seed(32)
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
-# Estimation d'une taille de population à partir de données de capture-marquage-recapture
+
 
 
 ### Vraissemblance du modèle
@@ -32,18 +35,18 @@ La vraissemblance du modèle $\mathcal{M}$ s'écrit comme suit :
 \left[C_1=c_1, C_{20}=c_{20}, C_{21}=c_{21} | \pi, N \right] &= \left[C_1=c_1| \pi, N \right] \left[C_{20}=c_{20}, | \pi, N, C_1=c_1\right] \left[C_{21}=c_{21} | \pi, N, C_1=c_1, C_{20}=c_{20},  \right]\\
 &= \left[C_1=c_1| \pi, N \right] \left[C_{20}=c_{20}, | \pi, N, C_1=c_1\right] \left[C_{21}=c_{21} | \pi, N, C_1=c_1 \right]\\
 &= C_{c_1}^{N} \pi^{c_1} (1 - \pi)^{N-c_1} C_{c_20}^{N-c_1} \pi^{c_{20}} (1 - \pi)^{N-c_1-c_{20}}\\
-&= C_{c_{1}}^{N} \pi^{c_1} (1 - \pi)^{N-c_1} C_{c_{20}}^{N-c_1} \pi^{c_{20}} (1 - \pi)^{N-c_1-c_{20}}
-C_{c_{21}}^{c_1} \pi^{c_{21}} (1 - \pi)^{C_1 - c_{21}}
+&= C_{N}^{c_{1}} \pi^{c_1} (1 - \pi)^{N-c_1} C_{N-c_1}^{c_{20}} \pi^{c_{20}} (1 - \pi)^{N-c_1-c_{20}}
+C_{c_1}^{c_{21}} \pi^{c_{21}} (1 - \pi)^{C_1 - c_{21}}
 \end{align*}
 
 
 On en déduit donc la log-vraissemblance en passant au log :
 
 \begin{align*}
-\text{l}(N, \pi)    &= \ln \left( C_{c_{1}}^{N} C_{c_{20}}^{N-c_1}  C_{c_{21}}^{c_1} \right)
+\text{l}(N, \pi)    &= \ln \left( C_{N}^{c_{1}} C_{N-c_1}^{c_{20}}  C_{c_1}^{c_{21}} \right)
 + (c_1 + c_{20} + c_{21})\ln \left( \pi  \right)
 + (2N - 2c_1 - c_{20} + c_1 - c_{21}) \ln \left( 1 - \pi  \right)\\
-                    &= \ln \left( C_{c_{1}}^{N} C_{c_{20}}^{N-c_1}  C_{c_{21}}^{c_1} \right) + (c_1 + c_{2})\ln \left( \pi  \right)
+                    &= \ln \left( C_{N}^{c_{1}} C_{N-c_1}^{c_{20}}  C_{c_1}^{c_{21}} \right) + (c_1 + c_{2})\ln \left( \pi  \right)
                     + (2N - c_1 - c_{2}) \ln \left( 1 - \pi  \right)
 \end{align*}
 
@@ -128,10 +131,10 @@ capture.sim <- function(N, pi){
   C1 <- my.rbinom(N=N, pi=pi)
   C20 <- my.rbinom(N=N-C1, pi=pi)
   C21 <- my.rbinom(N=C1, pi=pi)
-  return(tibble(C1=C1, C20=C20, C21=C21))
+  return(list(C1=C1, C20=C20, C21=C21))
 }
 
-capture.sim(N, pi)
+capture.sim(N, pi) %>% as.data.frame()
 ```
 
 
@@ -167,19 +170,20 @@ $$
 On choisit une loi à priori $\beta(a, b)$ pour $\pi$, que l'on note $f(\pi) = \pi^{a-1} (1-\pi)^{b-1}$
 
 \begin{align*}
-\ln \left( \left[ \pi | N, C_1, C_{20}, C_{21} \right] f(\pi) = \pi^{a-1} (1-\pi)^{b-1} \right)
-&\propto (c_1 + c_{2})\ln \left( \pi  \right) + (2N - c_1 - c_{2}) \ln \left( 1 - \pi  \right) + (a-1) \ln(\pi) + (b-1) \ln (1-\pi)\\
-&\propto (c_1 + c_{2} + a - 1)\ln \left( \pi  \right) + (2N - c_1 - c_{2} + b - 1) \ln \left( 1 - \pi  \right)
+\ln \left( \left[ \pi | N, C_1, C_{20}, C_{21} \right] \right)
+& = l(N, \pi) + \ln \left( f(\pi) \right) + cte\\
+& = (c_1 + c_{2})\ln \left( \pi  \right) + (2N - c_1 - c_{2}) \ln \left( 1 - \pi  \right) + (a-1) \ln(\pi) + (b-1) \ln (1-\pi) + cte'\\
+& = (c_1 + c_{2} + a - 1)\ln \left( \pi  \right) + (2N - c_1 - c_{2} + b - 1) \ln \left( 1 - \pi  \right) + cte''
 \end{align*}
 
-On reconnait le logarithme d'une loi proportionnelle à une loi $\beta(c_1 + c_2 + a, 2N - c_1 - c_{2} + b)$.
+On reconnait, à une constante près, le logarithme d'une loi $\beta(c_1 + c_2 + a, 2N - c_1 - c_{2} + b)$.
 
 Donc:
 $$
 \boxed{\pi | _{N} \sim \beta \; (c_1 + c_2 + a, 2N - c_1 - c_2 + b)}
 $$
 
-On en déduit son espérance et sa variance :
+On en déduit son espérance :
 
 
 \begin{align*}
@@ -192,6 +196,10 @@ On en déduit son espérance et sa variance :
 ### Représentation graphique
 
 On choisit $a=1$, $b = 3$.
+
+```{r beta, fig.align='center', fig.cap="\\label{fig:beta} loi Beta(1, 3)"}
+curve(dbeta(x, 1, 3))
+```
 
 ```{r}
 set.seed(32)
@@ -214,14 +222,17 @@ p_val<- seq(0, 1, length.out=100)
 ```
 
 
-```{r plots}
-plot(p_val, dbeta(p_val, a, b),type="l",col="red",ylab="Densité",xlab="pi",main=paste("a=",a,"b=",b),ylim=c(0,55))
+```{r plots, fig.align='center', fig.cap="\\label{fig:plots} Densités à priori, à postériori et estimateur de maximum de vraissemblance"}
+plot(p_val, dbeta(p_val, a, b),type="l",col="red",ylab="Densité",xlab="pi",
+     main=paste("a=",a,"b=",b),ylim=c(0,55))
 curve(dbeta(x,a.post,b.post),add=TRUE, col="blue")
 abline(v=pi.MLE)
-legend("topright", legend=c("a priori", "a posteriori", "max.vraiss"), bty='n', pch=rep('_',3), col=c("red","blue","black"))
+legend("topright", legend=c("a priori", "a posteriori", "max.vraiss"), bty='n',
+       pch=rep('_',3), col=c("red","blue","black"))
 ```
 
-On observe que le seul mode de la loi à postériori coincide avec la valeur de l'estimateur de maximum de vraissemblance de $\pi$.
+On observe que le seul mode de la loi à postériori coincide avec la valeur de 
+l'estimateur de maximum de vraissemblance de $\pi$.
 C'est bon signe.
 
 
@@ -267,8 +278,10 @@ N.true <- 923
 pi.true <- 0.15
 
 N.MC <- function(N, pi, n.iter){
-  df.repeated <- replicate(n.iter, capture.sim(N, pi)) %>% drop() %>% t() %>% as.data.frame()
-  N.hat.repeated <- apply(df.repeated, MARGIN=1, FUN = function(x) x$C1*(x$C20+x$C21)/x$C21)
+  df.repeated <- 
+    replicate(n.iter, capture.sim(N, pi)) %>% drop() %>% t() %>% as.data.frame()
+  N.hat.repeated <- apply(df.repeated, MARGIN=1, 
+                          FUN = function(x) x$C1*(x$C20+x$C21)/x$C21)
   df.repeated$N.hat <- N.hat.repeated
   N.monte.carlo <- mean(df.repeated$N.hat)
   return(N.monte.carlo)
@@ -287,9 +300,12 @@ N.evolution <- sapply(N.true.seq, FUN=function(n) N.MC(n, pi.true, n.iter))
 
 
 
-```{r}
+```{r plot.erreur, fig.align='center', fig.cap="\\label{fig:plot.erreur} Evolution du biais sur N, en fonction de N.true"}
 plot(N.true.seq, N.evolution-N.true, xlab="N.true")
 ```
+
+On remarque que plus $N_{true}$ est grand, plus le biais est faible.
+Mais cette erreur semble avoir une tendance linéaire qui dépasse 0...
 
 
 
@@ -304,10 +320,173 @@ plot(N.true.seq, N.evolution-N.true, xlab="N.true")
 
 
 ####
+
+On choisit une loi *à priori* uniforme sur l'ensemble discret $\{1, ..., 2000\}$ pour N.
+Sa densité à priori est donc $f(n) = \frac{1}{2000} \; , \quad \forall n\in \{1, ..., 2000\}$.
+
+On rappelle que la vraissemblance du modèle $\mathcal{M}$, dont la log a été calculée précédemment est la suivante :
+
 $$
-\begin{align*}
-\left[N=n, \pi=p, C_1=c_1, C_{20}=c_{20}, C_{21}=C_{21} \right] =\\ 
-\left[N=n \right] \left[\pi=p | N=n \right] \left[C_1=c_1| \pi=p, N=n \right] \left[C_{20}=c_{20}, | \pi=p, N=n, C_1=c_1 \right] \left[C_{21}=c_{21} | \pi=p, N=n, C_1=c_1, C_{20}=c_{20}  \right]\\
-\end{align*}
+[y | N, \pi] = C_N^{c_1} C_{N-c_1}^{c_{20}} C_{c_1}^{c_{21}} \pi^{c_1 + c_2} (1 - \pi)^{2N-c_1-c_2}
 $$
 
+On en déduit donc la forme de la loi à postériori.
+
+
+\begin{align*}
+[N | y, \pi] & \propto f(n)[y | N, \pi]\\
+&\propto \frac{1}{2000} C_N^{c_1} C_{N-c_1}^{c_{20}} C_{c_1}^{c_{21}} \pi^{c_1 + c_2} (1 - \pi)^{2N-c_1-c_2}\\
+& \propto C_N^{c_1} C_{N-c_1}^{c_{20}} (1 - \pi)^{2N-c_1-c_2}\\
+& \propto C_N^{c_1} C_{N-c_1}^{c_{20}} (1 - \pi)^{2N}\\
+& \propto \frac{N!}{c_1 ! (N - c_1)!} \frac{(N-c_1)!}{(c_{20})! (N - c_1 - c_{20})!} (1 - \pi)^{2N}\\
+& \propto \frac{N!}{(N - c_1 - c_{20})!}  (1 - \pi)^{2N}\\
+[N | y, \pi] & \propto C_N^{c1+c_{20}}  (1 - \pi)^{2N}
+\end{align*}
+
+Bien qu'elle ressemble à une loi binomiale, cette loi ne fait pas partie des lois analytiques simples connues.
+Il sera donc nécessaire d'utiliser un algorithme ne dépendant pas de la simulation de cette loi, lorsque l'on souhaitera simuler sa densité.
+
+
+#### Algorithme de Metropolis within Gibbs
+
+On se propose maintenant d'échantilloner dans la loi jointe à postériori du couple $(N, \pi)$ sachant $y=(c_1, c_{20}, c_{21})$ à l'aide de l'algoritheme de Meetropolis within Gibbs dont l'itération $k$ est la suivante :
+
+- Mise à jour du paramètre $\pi$ en tirant dans sa loi conditionnelle complète.
+- Mise à jour du paramètre $N$ avec l'algorithme de Metropolis-Hastings (MH), en utilisant comme loi de proposition une loi uniforme (discrète) sur $\left \{ N^{curr} - k, N^{curr} + k \right \}$ où $N^{curr}$ désigne la valeur courrante du paramètre $N$ à une itération donnée et $k$ est un paramètre de saut.
+
+La loi de proposition $Q(x,y) := 1_{\{x-k, x+k\}}(y)$ étant symétrique, le ratio de Métropolis-Hastings se simplifie pour devenir, à l'ittération k :
+
+$$
+r_k = \frac{[N^{cand} | \pi, y]}{[N^{k-1} | y]}
+$$
+où $N^{cand}$ a été tiré selon la loi $Q(N^{k-1}, \cdot)$
+
+```{r}
+N.law <- function(N, pi, c1, c20){
+  density <- choose(N, c1+c20)*(1-pi)^(2*N)
+  return(density)
+}
+```
+
+#####################
+##    PROBLEMES    ##
+#####################
+
+```{r}
+MCMC <- function(theta.0, y, pi.0, n.iter, a, b, k){
+  c1 <- y[1]
+  c20 <- y[2]
+  c21 <- y[3]
+  c2 <- c20 + c21
+  pi.0 <- theta.0[1]
+  N.0 <- theta.0[2]
+  
+  chain <- matrix(0, nrow=n.iter, ncol=2, dimnames=list(NULL,c("pi","N")))
+  accept <- vector("numeric", n.iter)
+
+  chain[1, 1:2] <- theta.0
+  accept[1] <- 1
+  N.curr <- N.0
+  pi.curr <- pi.0
+  oldlik <- N.law(N.curr, pi.curr, c1, c20)
+  
+  for (i in 2:n.iter){
+    #on tire dans la loi conditionnelle complète de pi
+    pi.curr <- rbeta(n=1, shape1=c1+c2+a, shape2=2*N.curr-c1-c2+b)
+    
+    #loi uniforme discrète
+    innov <- sample(-k:k, size=1)
+    N.cand <- N.curr + innov
+    lik <- N.law(N.cand, pi.curr, c1, c20)
+    r <- lik/oldlik
+    u <- runif(1)
+    
+    if (u<r){
+      N.curr <- N.cand
+      oldlik <- lik
+      accept[i] <- 1
+    }
+    
+    chain[i,] <- c(pi.curr, N.curr)
+  }
+  return(list(chain=chain, taux.accept=mean(accept)))
+}
+```
+
+```{r}
+plot.k.accept.rate <- function(k.seq, theta.0, n.iter, y, a, b){
+  accept.rate.evolution <- sapply(k.seq, FUN=function(x){ 
+    return(MCMC(theta.0, y, pi.0, n.iter, a, b, x)$taux.accept)})
+  plot(x=k.seq, y=accept.rate.evolution)
+}
+```
+
+
+```{r}
+set.seed(125)
+k.seq <- seq(1, 301, 10)
+n.iter <- 10000
+a <- 1
+b <- 3
+y <- c(C1=125, C20=134, C21=21)
+pi.0 <- 0
+theta.0 <- c(pi.0=rbeta(n=1, shape1=a, shape2=b), N.0=1000)
+
+#MCMC(theta.0, y, pi, n.iter, 1, 3, 5)
+
+plot.k.accept.rate(k.seq, theta.0, n.iter, y, a, b)
+
+#k.opt <- ?
+```
+
+
+####
+
+```{r}
+G <- 20000
+theta.0.list <- t(matrix(data=c(1, 1, 2, 2, 3, 3), ncol=3))
+
+chain1 <- MCMC(theta.0=theta.0.list[1,], y=y, pi.0=pi.0, n.iter=n.iter, 
+               a=a, b=b, k=k.opt)
+chain2 <- MCMC(theta.0=theta.0.list[2,], y=y, pi.0=pi.0, n.iter=n.iter, 
+               a=a, b=b, k=k.opt)
+chain3 <- MCMC(theta.0=theta.0.list[3,], y=y, pi.0=pi.0, n.iter=n.iter, 
+               a=a, b=b, k=k.opt)
+```
+
+```{r}
+library(ggmcmc)
+mcmc.chains <- mcmc.list(mcmc(chain1), mcmc(chain2), mcmc(chain3))
+model.samples.gg <- ggs(mcmc.chains)
+ggs_traceplot(model.samples.gg)
+```
+
+
+**critère de Gelman-Rubin**
+
+```{r}
+library(coda)
+gelman.diag(mcmc.chains)
+gelman.plot(mcmc.chains)
+```
+
+Règle : $\hat{R} < 1.05$ et stabilité $\Rightarrow$ pas de problème de convergence majeur diagnostiqué.
+
+
+
+#### Autocorrélation intra-chaînes
+
+```{r}
+autocorr.plot(mcmc.chains)
+```
+
+
+
+
+#### Echantillon effectif
+
+```{r}
+model.samples <- mcmc.list(mcmc(chain1[-c(1:G0, )]), mcmc(chain2[-c(1:G0, )]), 
+                           mcmc(chain3[-c(1:G0, )]))
+effectiveSize(model.samples)
+```
