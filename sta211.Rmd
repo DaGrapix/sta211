@@ -354,12 +354,12 @@ On se propose maintenant d'échantilloner dans la loi jointe à postériori du c
 - Mise à jour du paramètre $\pi$ en tirant dans sa loi conditionnelle complète.
 - Mise à jour du paramètre $N$ avec l'algorithme de Metropolis-Hastings (MH), en utilisant comme loi de proposition une loi uniforme (discrète) sur $\left \{ N^{curr} - k, N^{curr} + k \right \}$ où $N^{curr}$ désigne la valeur courrante du paramètre $N$ à une itération donnée et $k$ est un paramètre de saut.
 
-La loi de proposition $Q(x,y) := 1_{\{x-k, x+k\}}(y)$ étant symétrique, le ratio de Métropolis-Hastings se simplifie pour devenir, à l'ittération k :
+La loi de proposition $Q(x,y) := 1_{\{x-k, x+k\}}(y)$ étant symétrique, le ratio de Métropolis-Hastings se simplifie pour devenir, à l'ittération i :
 
 $$
-r_k = \frac{[N^{cand} | \pi, y]}{[N^{k-1} | y]}
+r_i = \frac{[N^{cand} | \pi, y]}{[N^{i-1} | y]}
 $$
-où $N^{cand}$ a été tiré selon la loi $Q(N^{k-1}, \cdot)$
+où $N^{cand}$ a été tiré selon la loi $Q(N^{-1}, \cdot)$
 
 ```{r}
 N.law <- function(N, pi, c1, c20){
