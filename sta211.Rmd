@@ -309,6 +309,9 @@ L'estimateur naïf de Petersen nous indique qu'il y a 923 "poissons" dans le lac
 Supposons ici que les "vraies" valeurs des paramètres soient $N_{true} = 923$
 et $\pi_{true} = 0.15$.
 
+On décide de générer 100 processus de capture-marquage-recapture, et d'estimer la valeur de $N_{true}$
+par Monte-Carlo.
+
 ```{r}
 n.iter <- 100
 N.true <- 923
@@ -326,7 +329,7 @@ N.MC <- function(N, pi, n.iter){
 
 N.MC(N.true, pi.true, n.iter)
 ```
-
+On trouve 960, ce qui est 4% plus élevé que $N_{true}$.
 
 
 ```{r}
