@@ -54,6 +54,7 @@ On considère le modèle probabiliste $\mathcal{M}$ suivant:
 
 \newpage
 
+
 # Pour commencer...
 
 ## Vraissemblance du modèle
