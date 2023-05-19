@@ -616,7 +616,7 @@ et en connaissant la dynamique probabiliste du modèle, nous sommes capables, à
 de la méthode bayésienne, d'obtenir de bonnes approximations pour $\pi$ et $N$, avec
 respectivement 7% et 12% d'erreur.
 
-Quant à la méthode fréquentiste, nous avons pû voir qu'avec plus d'informations,
+Quant à la méthode fréquentiste, nous avons pu voir qu'avec plus d'informations,
 grâce au nombre élevé d'expériences répétées,
 il était possible d'obtenir de meilleures estimations (4% d'erreur pour $N_{true}$).
 
@@ -634,3 +634,14 @@ plot(mcmc.chains, density=TRUE, trace=FALSE)
 \newpage
 # Conclusion {-}
 
+Nous avons pu voir au cours de ce projet plusieurs méthodes permettant de déterminer de la taille d'une population 
+selon les informations que l'on a à disposition, à savoir les données de l'expérience de capture-marquage-recapture ainsi que du nombre de réalisations de cette expérience.
+
+Nous avons pour ce faire réalisé une modélisation du modèle physique de capture-marquage-recapture, qui a permis de simuler des échantillons de tests,
+qui ont été utilisés au cours de la méthode fréquentiste d'estimation, basée sur le Monte-Carlo et l'estimateur de Petersen.
+Nous avons également comparé cette méthode à la méthode bayésienne.
+Que ce soit sur la facilité de mise en place de ces deux méthodes et de leur précision, nous avons observé plusieurs points sur lesquels elles se distinguent.
+
+Alors que la méthode fréquentiste est très précise lorsque le nombre d'itérations d'expérice augmente, elle perd en précision lorsque la taille de la population est trop faible.
+
+La méthode bayésienne ne requiert quant-à-elle que très peu de données observées (une seule expérience suffit!), et permet d'estimer la taille de la population ainsi que l'efficacité de la pêche. Elle est cependant moins précise.
