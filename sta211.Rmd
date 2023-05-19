@@ -256,6 +256,7 @@ b.post <- 2*N - C1 - C2 + b
 pi.MLE <- (C1 + C2)/(2*N)
 
 p_val<- seq(0, 1, length.out=100)
+pi.MLE
 ```
 
 
@@ -346,6 +347,9 @@ plot(N.true.seq, (N.evolution-N.true.seq)/N.true.seq, xlab="N.true", ylab="Biais
 
 On remarque que le biais diminue avec une tendance linéaire jusqu'à atteindre 0.
 
+Néanmoins, le biais relatif reste très élevé pour des populations faibles 
+(i.e. lorsque $N_{true}$ est petit).
+Cette méthode est donc plus efficace pour recenser de larges tailles de populations.
 
 
 
@@ -607,9 +611,26 @@ Nous obtenons finalement les estimations suivantes pour les valeurs de $N$ et $\
 \end{align*}
 
 
+Nous pouvons voir qu'avec une unique expérience de capture-marquage-recapture,
+et en connaissant la dynamique probabiliste du modèle, nous sommes capables, à l'aide
+de la méthode bayésienne, d'obtenir de bonnes approximations pour $\pi$ et $N$, avec
+respectivement 7% et 12% d'erreur.
+
+Quant à la méthode fréquentiste, nous avons pû voir qu'avec plus d'informations,
+grâce au nombre élevé d'expériences répétées,
+il était possible d'obtenir de meilleures estimations (4% d'erreur pour $N_{true}$).
+
+Mais cette méthode vient avec deux désaventages.
+D'abord, elle ne permet pas d'estimer parallèlement la valeur de $\pi$.
+De plus, ses estimations de $N$ viennent avec un coût, celui de pouvoir réaliser 100 expériences de suite.
+De plus, il a été montré que cette méthode était efficace lorsque $N_{true}$ était grand.
+Ce qui n'est peut être pas le cas avec la méthode bayésienne.
+
 ```{r loi.post, fig.align='center', fig.cap="\\label{fig:loi.post} Lois à postériori approchées (pi à gauche, N à droite)"}
 plot(mcmc.chains, density=TRUE, trace=FALSE)
 ```
 
 
+\newpage
+# Conclusion {-}
 

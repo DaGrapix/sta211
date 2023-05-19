@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.19)  19 MAY 2023 15:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.19)  19 MAY 2023 20:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -476,93 +476,93 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 220.
 [3{c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
-<sta211_files/figure-latex/frequence-1.pdf, id=148, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/frequence-1.pdf, id=153, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/frequence-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/frequence-1.pdf>
 Package pdftex.def Info: sta211_files/figure-latex/frequence-1.pdf  used on input line 276.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [4] [5 <./sta211_files/figure-latex/frequence-1.pdf>] [6]
-<sta211_files/figure-latex/beta-1.pdf, id=175, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/beta-1.pdf, id=180, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/beta-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/beta-1.pdf>
 Package pdftex.def Info: sta211_files/figure-latex/beta-1.pdf  used on input line 388.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [7 <./sta211_files/figure-latex/beta-1.pdf>]
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 424.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 429.
 (c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<sta211_files/figure-latex/plots-1.pdf, id=186, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/plots-1.pdf, id=191, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/plots-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/plots-1.pdf>
-Package pdftex.def Info: sta211_files/figure-latex/plots-1.pdf  used on input line 431.
+Package pdftex.def Info: sta211_files/figure-latex/plots-1.pdf  used on input line 436.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 446.
-[8{c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./sta211_files/figure-latex/plots-1.pdf>]
-<sta211_files/figure-latex/plot.erreur-1.pdf, id=202, 469.755pt x 325.215pt>
+(Font)              <14.4> on input line 451.
+[8{c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./sta211_files/figure-latex/plots-1.pdf>] [9]
+<sta211_files/figure-latex/plot.erreur-1.pdf, id=212, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/plot.erreur-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/plot.erreur-1.pdf>
-Package pdftex.def Info: sta211_files/figure-latex/plot.erreur-1.pdf  used on input line 535.
+Package pdftex.def Info: sta211_files/figure-latex/plot.erreur-1.pdf  used on input line 545.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[9] [10 <./sta211_files/figure-latex/plot.erreur-1.pdf>]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 592.
+[10 <./sta211_files/figure-latex/plot.erreur-1.pdf>]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 606.
 (c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [11] [12]
-<sta211_files/figure-latex/k.opt-1.pdf, id=232, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/k.opt-1.pdf, id=237, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/k.opt-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/k.opt-1.pdf>
-Package pdftex.def Info: sta211_files/figure-latex/k.opt-1.pdf  used on input line 730.
+Package pdftex.def Info: sta211_files/figure-latex/k.opt-1.pdf  used on input line 744.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [13 <./sta211_files/figure-latex/k.opt-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 766--767
+Underfull \hbox (badness 10000) in paragraph at lines 780--781
 
  []
 
-<sta211_files/figure-latex/chaines.gg-1.pdf, id=243, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/chaines.gg-1.pdf, id=248, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/chaines.gg-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/chaines.gg-1.pdf>
-Package pdftex.def Info: sta211_files/figure-latex/chaines.gg-1.pdf  used on input line 781.
+Package pdftex.def Info: sta211_files/figure-latex/chaines.gg-1.pdf  used on input line 795.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [14]
-<sta211_files/figure-latex/gelman-1.pdf, id=251, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/gelman-1.pdf, id=256, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/gelman-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/gelman-1.pdf>
-Package pdftex.def Info: sta211_files/figure-latex/gelman-1.pdf  used on input line 822.
+Package pdftex.def Info: sta211_files/figure-latex/gelman-1.pdf  used on input line 836.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [15 <./sta211_files/figure-latex/chaines.gg-1.pdf>]
-<sta211_files/figure-latex/autocorr-1.pdf, id=267, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/autocorr-1.pdf, id=272, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/autocorr-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/autocorr-1.pdf>
-Package pdftex.def Info: sta211_files/figure-latex/autocorr-1.pdf  used on input line 852.
+Package pdftex.def Info: sta211_files/figure-latex/autocorr-1.pdf  used on input line 866.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [16 <./sta211_files/figure-latex/gelman-1.pdf>] [17 <./sta211_files/figure-latex/autocorr-1.pdf>] [18]
-<sta211_files/figure-latex/loi.post-1.pdf, id=296, 469.755pt x 325.215pt>
+<sta211_files/figure-latex/loi.post-1.pdf, id=301, 469.755pt x 325.215pt>
 File: sta211_files/figure-latex/loi.post-1.pdf Graphic file (type pdf)
 <use sta211_files/figure-latex/loi.post-1.pdf>
-Package pdftex.def Info: sta211_files/figure-latex/loi.post-1.pdf  used on input line 973.
+Package pdftex.def Info: sta211_files/figure-latex/loi.post-1.pdf  used on input line 1005.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [19 <./sta211_files/figure-latex/loi.post-1.pdf>] (./sta211.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `sta211.out' has not changed.
-(rerunfilecheck)             Checksum: ED3DECD86221CCDAACC477D9DB4B3625;4330.
+(rerunfilecheck)             Checksum: 65B8CA2C407791678CE4847EC9A97587;4425.
  ) 
 Here is how much of TeX's memory you used:
- 11783 strings out of 478056
- 187694 string characters out of 5839085
+ 11787 strings out of 478056
+ 187738 string characters out of 5839085
  1870845 words of memory out of 5000000
- 31614 multiletter control sequences out of 15000+600000
+ 31616 multiletter control sequences out of 15000+600000
  579431 words of font info for 85 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,15n,76p,506b,470s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,76p,506b,578s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/pc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on sta211.pdf (20 pages, 1028057 bytes).
+Output written on sta211.pdf (20 pages, 1030540 bytes).
 PDF statistics:
- 440 PDF objects out of 1000 (max. 8388607)
- 344 compressed objects within 4 object streams
- 74 named destinations out of 1000 (max. 500000)
- 198 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 446 PDF objects out of 1000 (max. 8388607)
+ 350 compressed objects within 4 object streams
+ 76 named destinations out of 1000 (max. 500000)
+ 206 words of extra memory for PDF output out of 10000 (max. 10000000)
 
