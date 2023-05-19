@@ -362,14 +362,6 @@ $$
 où $N^{cand}$ a été tiré selon la loi $Q(N^{-1}, \cdot)$
 
 ```{r}
-N.law <- function(N, pi, c1, c20){
-  res <- prod((N-c1-c20):(N))*(1-pi)^(2*N)
-  return(res)
-}
-```
-
-
-```{r}
 MH.ratio <- function(N, N.curr, pi){
   #return(ifelse(N>=N.curr, prod((N.curr+1):N), 1/prod((N+1):N.curr))*(1-pi)^(2*(N-N.curr)))
   seq1 <- (N-c1-c20):N
@@ -404,7 +396,6 @@ MCMC <- function(theta.0, y, n.iter, a, b, k){
     #loi uniforme discrète
     N.cand <- sample(x=(N.curr-k):(N.curr+k), size=1)
     
-    #r <- ifelse(N>=N.curr, prod((N.curr+1):N), 1/prod((N+1):N.curr))*((1-pi.curr)^(2*(N-N.curr)))
     r <- MH.ratio(N.cand, N.curr, pi.curr)
     u <- runif(n=1, min=0, max=1)
     
@@ -447,7 +438,7 @@ k.accept.rate.evolution <- function(k.seq, theta.0,pi.0, n.iter, y, a, b){
 ```
 
 
-```{r}
+```{r k.opt, fig.align='center', fig.cap="\\label{fig:k.opt} Evolution du taux d'acceptation en fonction de k"}
 set.seed(30)
 k.seq <- seq(1, 301, 10)
 n.iter <- 10000
@@ -472,8 +463,9 @@ k.opt <- df$k[which.max(which(df$accept.rate>0.4))]
 #221
 ```
 
+La figure montre une valeur de $k$ optimale valant 221.
 
-#### Critères de convergence
+#### Examen de convergence
 
 ```{r}
 set.seed(92)
@@ -488,7 +480,7 @@ chain3 <- MCMC(theta.0=theta.0.list[,3], y, G, a, b, k.opt)$chain
 
 ##### Examen visuel
 
-```{r}
+```{r chaines.gg, fig.align='center', fig.cap="\\label{fig:chaines.gg} Tracé de l'évolution des chaines pour chaque paramètre"}
 library(ggmcmc)
 library(coda)
 
@@ -499,6 +491,14 @@ ggs_traceplot(model.samples.gg)
 
 Les chaînes semblent se mélanger convenablement. Elles explorent le même support de valeurs pour les différents 
 paramètres de *theta.0.list*.
+
+```{r chaines, fig.align='center', fig.cap="\\label{fig:chaines} Tracé des valeurs (pi, N) prises par les 3 chaines"}
+par(mfrow=c(1, 3))
+plot(chain1, xlab = "pi", ylab = "N")
+plot(chain2, xlab = "pi", ylab = "N")
+plot(chain3, xlab = "pi", ylab = "N")
+```
+
 
 ##### critère de Gelman-Rubin
 
@@ -527,13 +527,15 @@ Les autocorrélogrammes montrent des corrélations encore très élevées (<0.5)
 
 ```{r}
 G0 <- 10000
-model.samples <- mcmc.list(list(mcmc(chain1[-c(1:G0)]), mcmc(chain2[-c(1:G0)]), 
-                           mcmc(chain3[-c(1:G0)])))
+model.samples <- mcmc.list(mcmc(chain1[-c(1:G0),]), mcmc(chain2[-c(1:G0),]), 
+                           mcmc(chain3[-c(1:G0),]))
 autocorr.plot(model.samples)
-ggs_effective(ggs(model.samples), proportion = FALSE, plot = FALSE)
+
+effectiveSize(model.samples)
 ```
 
 ```{r}
+set.seed(27)
 G <- 100000
 G0 <- 10000
 
@@ -541,8 +543,8 @@ chain1 <- MCMC(theta.0=theta.0.list[,1], y, G, a, b, k.opt)$chain
 chain2 <- MCMC(theta.0=theta.0.list[,2], y, G, a, b, k.opt)$chain
 chain3 <- MCMC(theta.0=theta.0.list[,3], y, G, a, b, k.opt)$chain
 
-model.samples <- mcmc.list(list(mcmc(chain1[-c(1:G0)]), mcmc(chain2[-c(1:G0)]), 
-                           mcmc(chain3[-c(1:G0)])))
+model.samples <- mcmc.list(list(mcmc(chain1[-c(1:G0),]), mcmc(chain2[-c(1:G0),]), 
+                           mcmc(chain3[-c(1:G0),])))
 autocorr.plot(model.samples)
 model.samples.gg <- ggs(model.samples)
 ```
