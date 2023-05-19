@@ -363,18 +363,25 @@ où $N^{cand}$ a été tiré selon la loi $Q(N^{-1}, \cdot)$
 
 ```{r}
 N.law <- function(N, pi, c1, c20){
-  density <- choose(N,c1+c20)*(1-pi)^(2*N)
-  return(density)
+  res <- prod((N-c1-c20):(N))*(1-pi)^(2*N)
+  return(res)
 }
-
 ```
 
-#####################
-##    PROBLEMES    ##
-#####################
 
 ```{r}
-library(extraDistr)
+MH.ratio <- function(N, N.curr, pi){
+  #return(ifelse(N>=N.curr, prod((N.curr+1):N), 1/prod((N+1):N.curr))*(1-pi)^(2*(N-N.curr)))
+  seq1 <- (N-c1-c20):N
+  seq2 <- (N.curr-c1-c20):N.curr
+  ratio <- seq1/seq2
+  r <- prod(ratio)*((1-pi)^(2*(N-N.curr)))
+  return(r)
+  }
+```
+
+
+```{r}
 MCMC <- function(theta.0, y, n.iter, a, b, k){
   c1 <- y[1]
   c20 <- y[2]
@@ -390,106 +397,128 @@ MCMC <- function(theta.0, y, n.iter, a, b, k){
   accept[1] <- 1
   N.curr <- N.0
   pi.curr <- pi.0
-  oldlik <- N.law(N.curr, pi.curr, c1, c20)
   for (i in 2:n.iter){
     #on tire dans la loi conditionnelle complète de pi
+    pi.curr <- rbeta(n=1, shape1=c1+c2+a, shape2=2*N.curr-c1-c2+b)
     
     #loi uniforme discrète
-    N.cand <- rdunif(1,N.curr-k,N.curr+k)
-    u <- runif(n=1,min=0,max=1)
-    pi.curr <- rbeta(n=1, shape1=c1+c2+a, shape2=2*N.curr-c1-c2+b)
-    lik <- N.law(N.cand, pi.curr, c1, c20)
+    N.cand <- sample(x=(N.curr-k):(N.curr+k), size=1)
     
-    r <- lik/oldlik
-   
-    if (u<min(1,r))
-      {
+    #r <- ifelse(N>=N.curr, prod((N.curr+1):N), 1/prod((N+1):N.curr))*((1-pi.curr)^(2*(N-N.curr)))
+    r <- MH.ratio(N.cand, N.curr, pi.curr)
+    u <- runif(n=1, min=0, max=1)
+    
+    if (u<min(1,r)){
       N.curr <- N.cand
-      oldlik <- lik
       accept[i] <- 1
     }
-    else {
-      accept[i]<-0
-    }
-
     
-    chain[i,] <- c(pi.curr, N.curr)
+     chain[i,] <- c(pi.curr, N.curr)
   }
-  return(list(chain=chain, taux.accept=mean(accept)))
+  return(list(chain=matrix(chain, nrow=n.iter, ncol=2, byrow=FALSE), taux.accept=mean(accept)))
 }
-MCMC(c(pi.0=rbeta(n=1, shape1=1, shape2=3), N.0=1000),c(C1=125, C20=134, C21=21),10000,1,3,30)
+```
+
+
+```{r}
+set.seed(50)
+a <- 1
+b <- 3
+k <- 30
+n.iter <- 10000
+c1 <- 125
+c20 <- 134 
+c21 <- 21
+theta.0=c(pi.0=rbeta(n=1, shape1=a, shape2=b), N.0=sample(134:2000, size=1))
+y=c(c1=125, c20=134, c21=21)
+MCMC(theta.0, y, n.iter,a,b,k)$taux.accept
 ```
 
 ```{r}
-plot.k.accept.rate <- function(k.seq, theta.0,pi.0, n.iter, y, a, b){
+k.accept.rate.evolution <- function(k.seq, theta.0,pi.0, n.iter, y, a, b){
   accept.rate.evolution <- sapply(k.seq, FUN=function(x){ 
-    return(MCMC(theta.0, y, pi.0, n.iter, a, b, x)$taux.accept)})
-  plot(x=k.seq, y=accept.rate.evolution)
+    return(MCMC(theta.0, y, n.iter, a, b, x)$taux.accept)})
+  df <- as.data.frame(x=cbind(k=k.seq, accept.rate=accept.rate.evolution))
+  
+  plt <- ggplot(df, aes(x=k, y=accept.rate), plot=FALSE) + geom_point()
+  
+  return(list(plt=plt, df=df))
 }
 ```
 
 
 ```{r}
-set.seed(5)
+set.seed(30)
 k.seq <- seq(1, 301, 10)
 n.iter <- 10000
 a <- 1
 b <- 3
 y <- c(C1=125, C20=134, C21=21)
 pi.0 <- rbeta(n=1, shape1=a, shape2=b)
+N.0 <- sample(134:2000, size=1)
 
-theta.0 <- c(pi.0=pi.0, N.0=1000)
+theta.0 <- c(pi.0, N.0)
 print(theta.0)
 
-#MCMC(theta.0, y, pi, n.iter, 1, 3, 5)
 
-plot.k.accept.rate(k.seq, theta.0,pi.0, n.iter, y, a, b)
+list <- k.accept.rate.evolution(k.seq, theta.0,pi.0, n.iter, y, a, b)
+plt <- list$plt
+df <- list$df
 
+#plot
+plt + geom_hline(yintercept = 0.4)
 
-##################changer
-#k.opt <- ?
+k.opt <- df$k[which.max(which(df$accept.rate>0.4))]
+#221
 ```
 
 
-####
+#### Critères de convergence
 
 ```{r}
-#G <- 20000
-#theta.0.list <- t(matrix(data=c(1, 1, 2, 2, 3, 3), ncol=3))
+set.seed(92)
+G <- 20000
+theta.0.list <- sapply(X=1:3, FUN=function(x) c(rbeta(n=1, shape1=a, shape2=b),
+            sample(134:2000, size=1)))
 
-#chain1 <- MCMC(theta.0=theta.0.list[1,], y=y, pi.0=pi.0, n.iter=n.iter, 
-               a=a, b=b, k=k.opt)
-#chain2 <- MCMC(theta.0=theta.0.list[2,], y=y, pi.0=pi.0, n.iter=n.iter, 
-               a=a, b=b, k=k.opt)
-#chain3 <- MCMC(theta.0=theta.0.list[3,], y=y, pi.0=pi.0, n.iter=n.iter, 
-               a=a, b=b, k=k.opt)
+chain1 <- MCMC(theta.0=theta.0.list[,1], y, G, a, b, k.opt)$chain
+chain2 <- MCMC(theta.0=theta.0.list[,2], y, G, a, b, k.opt)$chain
+chain3 <- MCMC(theta.0=theta.0.list[,3], y, G, a, b, k.opt)$chain
 ```
+
+##### Examen visuel
 
 ```{r}
 library(ggmcmc)
+library(coda)
+
 mcmc.chains <- mcmc.list(mcmc(chain1), mcmc(chain2), mcmc(chain3))
 model.samples.gg <- ggs(mcmc.chains)
 ggs_traceplot(model.samples.gg)
 ```
 
+Les chaînes semblent se mélanger convenablement. Elles explorent le même support de valeurs pour les différents 
+paramètres de *theta.0.list*.
 
-**critère de Gelman-Rubin**
+##### critère de Gelman-Rubin
 
 ```{r}
-library(coda)
-gelman.diag(mcmc.chains)
+#gelman.diag(mcmc.chains)
 gelman.plot(mcmc.chains)
 ```
-
+Le critère de gelman-Rubin s'utilise ainsi :
 Règle : $\hat{R} < 1.05$ et stabilité $\Rightarrow$ pas de problème de convergence majeur diagnostiqué.
 
+Dans notre cas, on voit une nette stabilité du facteur à partir de 10000 itérations.
 
 
-#### Autocorrélation intra-chaînes
+#### Autocorrélations intra-chaînes
 
 ```{r}
 autocorr.plot(mcmc.chains)
 ```
+
+Les autocorrélogrammes montrent des corrélations encore très élevées (<0.5) pour des lags de 40.
 
 
 
@@ -497,7 +526,23 @@ autocorr.plot(mcmc.chains)
 #### Echantillon effectif
 
 ```{r}
-model.samples <- mcmc.list(mcmc(chain1[-c(1:G0, )]), mcmc(chain2[-c(1:G0, )]), 
-                           mcmc(chain3[-c(1:G0, )]))
-effectiveSize(model.samples)
+G0 <- 10000
+model.samples <- mcmc.list(list(mcmc(chain1[-c(1:G0)]), mcmc(chain2[-c(1:G0)]), 
+                           mcmc(chain3[-c(1:G0)])))
+autocorr.plot(model.samples)
+ggs_effective(ggs(model.samples), proportion = FALSE, plot = FALSE)
+```
+
+```{r}
+G <- 100000
+G0 <- 10000
+
+chain1 <- MCMC(theta.0=theta.0.list[,1], y, G, a, b, k.opt)$chain
+chain2 <- MCMC(theta.0=theta.0.list[,2], y, G, a, b, k.opt)$chain
+chain3 <- MCMC(theta.0=theta.0.list[,3], y, G, a, b, k.opt)$chain
+
+model.samples <- mcmc.list(list(mcmc(chain1[-c(1:G0)]), mcmc(chain2[-c(1:G0)]), 
+                           mcmc(chain3[-c(1:G0)])))
+autocorr.plot(model.samples)
+model.samples.gg <- ggs(model.samples)
 ```
