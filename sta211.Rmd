@@ -6,11 +6,19 @@ author: "Anthony Kalaydjian - Mathieu Occhipinti"
 date: "2023-05-03"
 header-includes:
    - \usepackage{cancel}
+   - \usepackage{float}
+   - \pagenumbering{gobble}
 output:
-  pdf_document: default
+  pdf_document:
+    number_sections: true
   html_document:
     df_print: paged
+    number_sections: true
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "", warning = FALSE, message = FALSE)
+```
 
 ```{r, include=FALSE}
 rm(list=ls())
@@ -20,14 +28,35 @@ library(tidyverse)
 set.seed(32)
 ```
 
-```{r setup, include=FALSE} 
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
-```
+
+\newpage
+
+\pagenumbering{arabic}
+\tableofcontents
+\newpage
+
+# Introduction {-}
+
+Les méthodes de capture-marquage-recapture sont des méthodes astucieuses d'échantillonnage non destructif pour évaluer le nombre (inconnu) d'individus $N$ dans une population. Dans le domaine de la gestion halieutique, par exemple, elles consistent à effectuer un certain nombre de pêches successives, avec remise, à l'aide d'un dispositif de capture (le plus souvent pêche électrique) d'efficacité $\pi$. L'efficacité est la probabilité de capture d'un poisson: elle dépend du milieu et de l'effort de pêche, et peut dépendre de la taille du poisson d'intérêt. Les poissons capturés à chaque pêche sont marqués puis remis à l'eau. Utilisées principalement en écologie, les méthodes de capture-marquage-recapture trouvent aussi des applications de portée bien plus large pour des recensements menés dans différents domaines.
+
+Dans cet exercice, nous considérons le cas de 2 expériences successives de pêche (avec marquage et remise) réalisées afin d'estimer le nombre (inconnu) de poissons $N$ dans un lac. On appelle $C_1$ et $C_2$ le nombre total de poissons capturés et marqués lors des pêches 1 et 2 respectivement. On appelle $C_{20}$ le nombre de poissons non marqués capturés lors de la deuxième pêche et $C_{21}$ le nombre de poissons marqués capturés lors de la deuxième pêche. On a donc : $C_2=C_{20} + C_{21}$.
+
+Les données disponibles proviennent d'une expérience réelle "miniature" de capture-marquage-recapture réalisée par des étudiants à l'aide d'un saladier ("le lac") rempli de riz ("l'eau du lac") et de haricots blancs ("les poissons"). Les données observées par les étudiants sont les suivantes : $C_1=125$, $C_{20}=134$ et $C_{21} = 21$.
+
+On considère le modèle probabiliste $\mathcal{M}$ suivant:
 
 
+\begin{align*}
+  C_1 & \sim Binomial(N, \pi)\\
+  C_{20} & \sim Binomial(N - C_1, \pi)\\
+  C_{21} & \sim Binomial(C_1, \pi)
+\end{align*}
 
+\newpage
 
-### Vraissemblance du modèle
+# Pour commencer...
+
+## Vraissemblance du modèle
 
 La vraissemblance du modèle $\mathcal{M}$ s'écrit comme suit :
 
@@ -53,7 +82,7 @@ On en déduit donc la log-vraissemblance en passant au log :
 car $c_{20} + c_{21} = c_2$
 
 
-### Simulation du tirage de $C_1$
+## Simulation du tirage de $C_1$ par inversion générique
 
 
 La fonction de répartition de la loi discrète de $C_1 \sim \mathcal{B}(N, \pi)$ est la suivante :
@@ -123,8 +152,10 @@ labs(y = "Frequence", x = "Nombre de succes")
 
 ```
 
+Afficher la densité calculée par inversion générique et la densité théorique montre la qualité de l'estimation de notre calcul.
 
-### Simulation d'une réalisation possible de capture-marquage-recapture
+
+## Simulation d'une réalisation possible de capture-marquage-recapture
 
 ```{r}
 capture.sim <- function(N, pi){
@@ -138,11 +169,13 @@ capture.sim(N, pi) %>% as.data.frame()
 ```
 
 
-## Supposons N connu
+# Supposons N connu
 
 Supposons tout d'abord que $N=950$ (connu) et estimons l'efficacité $\pi$.
 
-### Estimateur de maximum de vraissemblance $\hat{\pi}_{MLE}$ de $\pi$
+## Estimation par maximum de vraissemblance de $\pi$
+
+Nous allons d'abord calculer $\hat{\pi}_{MLE}$, l'estimateur de maximum de vraissemblance de $\pi$
 
 \begin{align*}
 \frac{d l}{d \pi}(N, \pi) &= (c_1 + c_{2})\frac{1}{\pi} + (2N - c_1 - c_{2}) \frac{1}{1 - \pi} (-1)\\
@@ -165,9 +198,11 @@ $$
 \boxed{\hat{\pi}_{MLE} = \frac{c_1 + c_{2}}{2N}}
 $$
 
-### Loi beta à priori
+## Estimation bayésienne de la loi de $\pi$
 
-On choisit une loi à priori $\beta(a, b)$ pour $\pi$, que l'on note $f(\pi) = \pi^{a-1} (1-\pi)^{b-1}$
+En plus d'une technique de maximum de vraissemblance, nous pouvons nous intéresser à une technique bayésienne
+pour estimer la loi de $\pi$.
+On choisit pour cela une loi à priori $\beta(a, b)$ pour $\pi$, que l'on note $f(\pi) = \pi^{a-1} (1-\pi)^{b-1}$.
 
 \begin{align*}
 \ln \left( \left[ \pi | N, C_1, C_{20}, C_{21} \right] \right)
@@ -193,9 +228,10 @@ On en déduit son espérance :
 
 
 
-### Représentation graphique
+## Comparaison des deux méthodes
 
 On choisit $a=1$, $b = 3$.
+La loi associée est décentrée et donne plus de poids, ce qui représente l'intuition comme quoi l'efficacité de pêche est relativement faible.
 
 ```{r beta, fig.align='center', fig.cap="\\label{fig:beta} loi Beta(1, 3)"}
 curve(dbeta(x, 1, 3))
@@ -231,18 +267,18 @@ legend("topright", legend=c("a priori", "a posteriori", "max.vraiss"), bty='n',
        pch=rep('_',3), col=c("red","blue","black"))
 ```
 
-On observe que le seul mode de la loi à postériori coincide avec la valeur de 
+On remarque d'abord que les données nous ont apporté beaucoup d'information, la densité à postériori étant beaucoup plus piqué et centrée autour d'un unique mode. Ce dernier coincide avec la valeur de 
 l'estimateur de maximum de vraissemblance de $\pi$.
-C'est bon signe.
+C'est bon signe, les deux méthodes ont un résultat cohérent.
 
 
-## Supposons N et $\pi$ connus
+# Supposons N et $\pi$ inconnus
 
-### Approche fréquentiste
+## Approche fréquentiste
 
 
 
-#### 
+### Estimateur de Petersen
 
 Pour évaluer le nombre d’individus N dans une population d’intérêt à partir de deux expériences de pêche de type capture-marquage-recapture, un estimateur fréquentiste naïf est l’estimateur de "Petersen" défini par :
 
@@ -267,7 +303,7 @@ round(N.hat, 0)
 L'estimateur naïf de Petersen nous indique qu'il y a 923 "poissons" dans le lac.
 
 
-####
+### Estimation empirique -- par Monte-Carlo -- de l'estimateur de Petersen
 
 Supposons ici que les "vraies" valeurs des paramètres soient $N_{true} = 923$
 et $\pi_{true} = 0.15$.
@@ -301,25 +337,17 @@ N.evolution <- sapply(N.true.seq, FUN=function(n) N.MC(n, pi.true, n.iter))
 
 
 ```{r plot.erreur, fig.align='center', fig.cap="\\label{fig:plot.erreur} Evolution du biais sur N, en fonction de N.true"}
-plot(N.true.seq, (N.evolution-N.true.seq)/N.true.seq, xlab="N.true",ylab="Biais relatif")
+plot(N.true.seq, (N.evolution-N.true.seq)/N.true.seq, xlab="N.true", ylab="Biais relatif")
 ```
 
-On remarque que plus $N_{true}$ est grand, plus le biais est faible.
-Mais cette erreur semble avoir une tendance linéaire qui dépasse 0...
+On remarque que le biais diminue avec une tendance linéaire jusqu'à atteindre 0.
 
 
 
 
+## Approche bayésienne
 
-
-
-
-
-
-### Approche bayésienne
-
-
-####
+### Loi conditionnelle complète de $N$
 
 On choisit une loi *à priori* uniforme sur l'ensemble discret $\{1, ..., 2000\}$ pour N.
 Sa densité à priori est donc $f(n) = \frac{1}{2000} \; , \quad \forall n\in \{1, ..., 2000\}$.
@@ -347,7 +375,7 @@ Bien qu'elle ressemble à une loi binomiale, cette loi ne fait pas partie des lo
 Il sera donc nécessaire d'utiliser un algorithme ne dépendant pas de la simulation de cette loi, lorsque l'on souhaitera simuler sa densité.
 
 
-#### Algorithme de Metropolis within Gibbs
+### Algorithme de Metropolis within Gibbs
 
 On se propose maintenant d'échantilloner dans la loi jointe à postériori du couple $(N, \pi)$ sachant $y=(c_1, c_{20}, c_{21})$ à l'aide de l'algoritheme de Meetropolis within Gibbs dont l'itération $k$ est la suivante :
 
@@ -359,7 +387,7 @@ La loi de proposition $Q(x,y) := 1_{\{x-k, x+k\}}(y)$ étant symétrique, le rat
 $$
 r_i = \frac{[N^{cand} | \pi, y]}{[N^{i-1} | y]}
 $$
-où $N^{cand}$ a été tiré selon la loi $Q(N^{-1}, \cdot)$
+où $N^{cand}$ a été tiré selon la loi $Q(N^{i-1}, \cdot)$
 
 ```{r}
 MH.ratio <- function(N, N.curr, pi){
@@ -465,7 +493,7 @@ k.opt <- df$k[which.max(which(df$accept.rate>0.4))]
 
 La figure montre une valeur de $k$ optimale valant 221.
 
-#### Examen de convergence
+### Examen de convergence
 
 ```{r}
 set.seed(92)
@@ -478,7 +506,9 @@ chain2 <- MCMC(theta.0=theta.0.list[,2], y, G, a, b, k.opt)$chain
 chain3 <- MCMC(theta.0=theta.0.list[,3], y, G, a, b, k.opt)$chain
 ```
 
-##### Examen visuel
+#### Examen visuel {-}
+
+$\newline$
 
 ```{r chaines.gg, fig.align='center', fig.cap="\\label{fig:chaines.gg} Tracé de l'évolution des chaines pour chaque paramètre"}
 library(ggmcmc)
@@ -492,51 +522,49 @@ ggs_traceplot(model.samples.gg)
 Les chaînes semblent se mélanger convenablement. Elles explorent le même support de valeurs pour les différents 
 paramètres de *theta.0.list*.
 
-```{r chaines, fig.align='center', fig.cap="\\label{fig:chaines} Tracé des valeurs (pi, N) prises par les 3 chaines"}
-par(mfrow=c(1, 3))
-plot(chain1, xlab = "pi", ylab = "N")
-plot(chain2, xlab = "pi", ylab = "N")
-plot(chain3, xlab = "pi", ylab = "N")
-```
 
+#### critère de Gelman-Rubin {-}
 
-##### critère de Gelman-Rubin
-
-```{r}
-#gelman.diag(mcmc.chains)
+```{r gelman, fig.align='center', fig.cap="\\label{fig:gelman} Critère de Gelman-Rubin"}
+gelman.diag(mcmc.chains)
 gelman.plot(mcmc.chains)
 ```
 Le critère de gelman-Rubin s'utilise ainsi :
+
 Règle : $\hat{R} < 1.05$ et stabilité $\Rightarrow$ pas de problème de convergence majeur diagnostiqué.
 
 Dans notre cas, on voit une nette stabilité du facteur à partir de 10000 itérations.
 
+On identifie donc le temps de chauffe aux 10000 premières itérations, qu'il faudra retirer de la chaîne.
 
-#### Autocorrélations intra-chaînes
+### Autocorrélations intra-chaînes
 
-```{r}
-autocorr.plot(mcmc.chains)
+```{r autocorr, fig.align='center', fig.cap="\\label{fig:autocorr} Tracé des autocorrélogrammes des 3 chaines pour les variables pi et N"}
+ggs_autocorrelation(model.samples.gg)
 ```
 
-Les autocorrélogrammes montrent des corrélations encore très élevées (<0.5) pour des lags de 40.
+Les autocorrélogrammes montrent des corrélations encore élevées jusqu'au lag de 40.
+Il nous faudra à priori un grand nombre de tirages pour avoir un échantillon non corrélé de taille satisfaisante.
 
 
 
-
-#### Echantillon effectif
+### Echantillon effectif
 
 ```{r}
 G0 <- 10000
 model.samples <- mcmc.list(mcmc(chain1[-c(1:G0),]), mcmc(chain2[-c(1:G0),]), 
                            mcmc(chain3[-c(1:G0),]))
-autocorr.plot(model.samples)
+model.samples.gg <- ggs(model.samples)
 
 effectiveSize(model.samples)
 ```
 
+La taille d'échantillon effective est relativement faible. Il nous faudrait au moins 5000 échantillons.
+Nous pouvons augmenter le nombre d'itérations et réeffectuer les calculs pour l'augmenter. 
+
 ```{r}
 set.seed(27)
-G <- 100000
+G <- 200000
 G0 <- 10000
 
 chain1 <- MCMC(theta.0=theta.0.list[,1], y, G, a, b, k.opt)$chain
@@ -545,6 +573,39 @@ chain3 <- MCMC(theta.0=theta.0.list[,3], y, G, a, b, k.opt)$chain
 
 model.samples <- mcmc.list(list(mcmc(chain1[-c(1:G0),]), mcmc(chain2[-c(1:G0),]), 
                            mcmc(chain3[-c(1:G0),])))
-autocorr.plot(model.samples)
-model.samples.gg <- ggs(model.samples)
+
+effectiveSize(model.samples)
 ```
+
+```{r}
+Respost<- summary(model.samples)
+Respost$statistics[,4]< 0.05*Respost$statistics[,2]
+```
+L'erreur de Monte-Carlo est inférieure à 5% de l'ecart-type à posteriori empirique.
+On en déduit que la moyenne empirique de l'échantillon a posteriori de $(N, \pi)$ est un bon
+estimateur de Monte-Carlo de l'espérance a posteriori $\mathbb{E}(N, \pi|y)$
+
+```{r}
+print(Respost)
+```
+
+Les déviations standards sont nettement plus petites que les valeurs moyennes déterminées.
+Nous pouvons donc avoir confiance en les valeurs moyennes obtenues.
+
+Nous obtenons finalement les estimations suivantes pour les valeurs de $N$ et $\pi$ :
+
+
+\begin{align*}
+\begin{cases}
+\hat{\pi} &= 0.14\\
+\hat{N} &= 1039
+\end{cases}
+\end{align*}
+
+
+```{r loi.post, fig.align='center', fig.cap="\\label{fig:loi.post} Lois à postériori approchées (pi à gauche, N à droite)"}
+plot(mcmc.chains, density=TRUE, trace=FALSE)
+```
+
+
+
